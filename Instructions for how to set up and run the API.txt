@@ -1,0 +1,52 @@
+What are APIs?
+	APIs are mechanisms that enable two software components to communicate with each other using a set of definitions and protocols.
+
+In the following assignment for the "Intern Role", I made an API using Flask and use Elephant PostgreSQL.
+Here are the steps for creating an api->
+> Setup
+ - Initialize a Flask API
+ - Endpoints
+ - Running a Local Server
+> Writing Our API
+  - GET
+ - POST
+ - PUT
+ - DELETE
+ - Users Class (summary)
+What is involve in my API.
+> Functions
+
+      postMessage() -> Inserting the message in database. We have to send a JSON input which was having two properties
+                       1."msg":"Message You Want To Store" 
+                       2."user":"Send a user id which specifies that this message is reported by this user"
+
+      getMessage() -> Returning the list of messages with most recent messages are listed first. We have to only  request a get() response no JSON required.
+
+      deleteMessage() -> Delete the message which is requested to be deleted. We have to send a JSON input which was having one property
+		         1."mid':"An Integer which Specify which message have to be deleted" 
+
+      likeMessage() -> Like the message which is requested to be liked. It was an PUT request. We have to send a JSON input which was having one property
+                       1."like":"A Boolean value which specifies message is liked if true and if false then message was disliked"
+                       2."mid":"An Integer which Specify which message likes to be updated"
+
+> Trigger And Queries Used
+      1. This trigger triggered whenever a message is inserted 
+		CREATE  FUNCTION Likes() 
+                RETURNS TRIGGER
+                as $body$
+                BEGIN
+                insert into likes_table values(new.id+1,new.id,0);
+                return new;
+                END;
+                $body$ LANGUAGE PLPGSQL;
+
+                create trigger insert_like
+                after insert
+                on messages
+                for each row 
+                execute procedure Likes()
+      2. Queries Used For Creating Table "messages" and "likes_table".
+		"CREATE TABLE IF NOT EXISTS messages(id SERIAL PRIMARY KEY, msg TEXT,mydate DATE,mytime TIME,user INTEGER);"
+		"CREATE TABLE IF NOT EXISTS likes_table(mid INTEGER, num_like INTEGER);"
+
+
