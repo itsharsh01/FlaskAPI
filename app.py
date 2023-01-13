@@ -4,27 +4,7 @@ from dotenv import load_dotenv
 from flask import Flask,request,jsonify
 from datetime import datetime
 
-# CREATE_MESSAGE_TABLE=(
-#     "CREATE TABLE IF NOT EXISTS messages(id SERIAL PRIMARY KEY, msg TEXT,mydate DATE,mytime TIME,user INTEGER);"
-# )
-# CREATE_LIKE_TABLE=(
-#     "CREATE TABLE IF NOT EXISTS likes_table(mid INTEGER, num_like INTEGER);"
-# )
-INSERT_MESSAGE=(
-    "INSERT INTO messages(msg,mydate,mytime,uid) values(%s,%s,%s,%s) RETURNING id;"
-)
-INSERT_LIKE=(
-    "INSERT INTO likes_table(mid,num_like) values(%s,%s);"
-)
-UPDATE_LIKE=(
-    "UPDATE likes_table set num_like=%s where mid=%s;"
-)
-SELECT_LIKE=(
-    """ SELECT num_like from likes_table where mid=%s;"""
-)
-SELECT_MESSAGE=(
-    """SELECT a.id,a.msg,a.mydate,a.mytime,a.uid,b.num_like From messages as a left join likes_table as b on a.id=b.mid ORDER BY a.mytime DESC;"""
-)
+
 
 load_dotenv()
 app= Flask(__name__)
